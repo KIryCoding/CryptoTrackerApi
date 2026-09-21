@@ -5,6 +5,7 @@ using CryptoTrackerApi.Application.UseCases.Blockchain.Queries;
 using CryptoTrackerApi.Infrastructure.ExternalServices;
 using CryptoTrackerApi.Infrastructure.Persistence;
 using CryptoTrackerApi.Infrastructure.Swagger;
+using CryptoTrackerApi.Middleware;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -61,6 +62,30 @@ builder.Services.AddScoped<FetchAndStoreBlockchainCommandHandler>();
 builder.Services.AddScoped<GetBlockchainHistoryQueryHandler>();
 builder.Services.AddScoped<GetBlockchainHistoryByNetworkQueryHandler>();
 
+// Health Checks
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<CryptoDbContext>("CryptoDbContext");
+
+// CORS
+var corsOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>() ?? ["*"];
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DefaultCorsPolicy", policy =>
+    {
+        if (corsOrigins.Length == 1 && corsOrigins[0] == "*")
+        {
+            policy.AllowAnyOrigin();
+        }
+        else
+        {
+            policy.WithOrigins(corsOrigins);
+        }
+
+        policy.AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Ensure DB and tables exist (create on first run)
@@ -85,18 +110,25 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// Register global exception middleware
+app.UseMiddleware<ExceptionHandler>();
+
 app.UseHttpsRedirection();
+
+// CORS
+app.UseCors("DefaultCorsPolicy");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 app.Run();
 
