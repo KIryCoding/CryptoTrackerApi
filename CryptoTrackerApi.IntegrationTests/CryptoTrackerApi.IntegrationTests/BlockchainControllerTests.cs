@@ -2,7 +2,6 @@
 using System.Net.Http.Json;
 using CryptoTrackerApi.Application.DTOs;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Xunit;
 
 namespace CryptoTrackerApi.IntegrationTests;
 

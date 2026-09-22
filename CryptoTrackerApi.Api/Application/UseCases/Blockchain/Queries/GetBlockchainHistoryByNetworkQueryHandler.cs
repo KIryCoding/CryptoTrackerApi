@@ -3,7 +3,6 @@ using CryptoTrackerApi.Application.DTOs;
 using CryptoTrackerApi.Application.Interfaces;
 using CryptoTrackerApi.Domain.Entities;
 using CryptoTrackerApi.Domain.Extensions;
-using System.Linq;
 
 namespace CryptoTrackerApi.Application.UseCases.Blockchain.Queries
 {

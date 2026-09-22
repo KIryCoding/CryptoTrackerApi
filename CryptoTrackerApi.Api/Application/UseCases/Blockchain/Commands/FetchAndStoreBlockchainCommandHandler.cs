@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using CryptoTrackerApi.Application.Interfaces;
-using CryptoTrackerApi.Domain.Entities;
-using CryptoTrackerApi.Infrastructure.ExternalServices;
-using System.Text.Json;
+﻿using CryptoTrackerApi.Application.Interfaces;
 
 namespace CryptoTrackerApi.Application.UseCases.Blockchain.Commands
 {
