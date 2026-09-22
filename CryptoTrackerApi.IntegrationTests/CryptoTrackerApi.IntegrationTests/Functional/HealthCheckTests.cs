@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace CryptoTrackerApi.IntegrationTests;
+namespace CryptoTrackerApi.IntegrationTests.Functional;
 
 public class HealthCheckTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
