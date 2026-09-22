@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Ignore runtime SQLite DB files
-/Data/
+/CryptoTrackerApi.Api/Data/crypto.db
